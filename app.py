@@ -3,11 +3,11 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 students = [
-    {"name": "Sandrine", "Score": 100},
-    {"name": "Gergelay", "Score": 87},
-    {"name": "Frieda", "Score": 92},
-    {"name": "Fritz", "Score": 40},
-    {"name": "Sirius", "Score": 75},
+    {"name": "Sandrine", "score": 100},
+    {"name": "Gergelay", "score": 87},
+    {"name": "Frieda", "score": 92},
+    {"name": "Fritz", "score": 40},
+    {"name": "Sirius", "score": 75},
 ]
 
 @app.route("/")
