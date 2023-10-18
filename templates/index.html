@@ -35,6 +35,9 @@
                     <td>{{ student.score }}</td>
                     <td>
                         <a href="/edit/{{ student['id'] }}">Edit</a>
+                        <a href="/delete/{{ student['id'] }}"
+                        onclick="return confirm('apakah anda yakin akan menghapus?');"
+                        >Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
