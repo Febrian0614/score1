@@ -34,5 +34,5 @@ def edit_data(id):
     
 @app.route("/delete/<id>", methods=["GET"])
 def delete(id):
-    db.execute("delete from birthdays where id = ?", id)
+    db.execute("delete from score where id = ?", id)
     return redirect("/")
