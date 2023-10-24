@@ -1,10 +1,14 @@
-from flask import Flask, render_template, request, redirect
 from cs50 import SQL
+import os
+from flask import Flask, flash, redirect, render_template, request, session
+from flask_session import Session
+from werkzeug.security import check_password_hash, generate_password_hash
+
 
 app = Flask(__name__)
 
 db = SQL("sqlite:///score.db")
-
+udb = SQL("sqlite:///user.db")
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST": 
@@ -35,4 +39,40 @@ def edit_data(id):
 @app.route("/delete/<id>", methods=["GET"])
 def delete(id):
     db.execute("delete from score where id = ?", id)
-    return redirect("/")
+    return redirect("/")    
+
+
+@app.route("/register",methods=['POST', 'GET'])
+def register():
+    """Register user"""
+    if request.method == "POST":
+        if not request.form.get("username"):
+            return "must provide username"
+        elif not request.form.get("passwrod"):
+            return "must provide password"
+        rows = udb.execute("SELECT * FROM user WHERE username = ?", request.form.get("username"))
+
+        email = request.form.get("email")
+        name_user = request.form.get("name_user")
+        username = request.form.get("username")
+        password = request.form.get("password")
+        password_repeat = request.get("rpassword")
+
+        hash = generate_password_hash(password)
+        if len(rows) == 1:
+            return "username already taken"
+        if password == password_repeat:
+            db.execute("INSERT INTO user (username, hash) VALUES(?, ?)", usename, hash)
+
+            registered_user = udb.execute("select * from user where username = ?", username)
+            session["user_id"] = registered_user[0]["id"]
+            flash("you were sucessfully registered")
+            return redirect("/")
+
+        else:
+
+            return render_template("register.html", userdb=userdb)
+        
+    else:
+        return render_template("register.html")
+
